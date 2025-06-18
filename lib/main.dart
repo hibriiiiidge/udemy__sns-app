@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:udemy__sns_app/screens/home_screen.dart';
 import 'package:udemy__sns_app/screens/signin_screen.dart';
 import 'package:udemy__sns_app/screens/signup_screen.dart';
 
-void main() {
+void main() async{
+  await dotenv.load(fileName: ".env");
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_API_KEY']!,
+  );
   runApp(const SnsApp());
 }
 
@@ -46,7 +53,7 @@ class SnsAppState extends State<SnsApp> {
             );
         }
       },
-      home: const SigninScreen(),
+      home: const SignupScreen(),
     );
   }
 }

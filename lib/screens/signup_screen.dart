@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:udemy__sns_app/widgets/form_text_field.dart';
+import 'package:udemy__sns_app/modules/auth_repository.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -9,6 +10,19 @@ class SignupScreen extends StatefulWidget {
 }
 
 class SignupScreenState extends State<SignupScreen> {
+  String _username = '';
+  String _email = '';
+  String _password = '';
+
+  void _signUp() async {
+    final user = await AuthRepository().signup(
+      _username,
+      _email,
+      _password,
+    );
+    print(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,24 +58,33 @@ class SignupScreenState extends State<SignupScreen> {
                     FormTextField(
                       label: 'Username',
                       hintText: 'Enter your username',
+                      onChanged: (val) => setState(() {
+                        _username = val;
+                      }),
                     ),
                     const SizedBox(height: 16.0),
                     FormTextField(
                       label: 'Email',
                       hintText: 'Enter your email',
                       keyboardType: TextInputType.emailAddress,
+                      onChanged: (val) => setState(() {
+                        _email = val;
+                      }),
                     ),
                     const SizedBox(height: 16.0),
                     FormTextField(
                       label: 'Password',
                       hintText: 'Enter your password',
                       obscureText: true,
+                      onChanged: (val) => setState(() {
+                        _password = val;
+                      }),
                     ),
                     const SizedBox(height: 16.0),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _signUp,
                         style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.resolveWith<Color>((states) {
