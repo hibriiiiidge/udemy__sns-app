@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:udemy__sns_app/modules/auth/current_user_store.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:udemy__sns_app/modules/auth_repository.dart';
 import 'package:udemy__sns_app/screens/home_screen.dart';
 import 'package:udemy__sns_app/screens/signin_screen.dart';
 import 'package:udemy__sns_app/screens/signup_screen.dart';
@@ -24,12 +25,35 @@ class SnsApp extends ConsumerStatefulWidget {
 }
 
 class SnsAppState extends ConsumerState<SnsApp> {
+  bool _initialized = false;
+
+  @override
+  initState() {
+    super.initState();
+    _trySignIn();
+  }
+
   Widget _buildBody() {
+    if(!_initialized) return Container();
     final currentUser = ref.watch(currentUserProvider);
     if (currentUser == null) {
       return const SigninScreen();
     } else {
       return const HomeScreen();
+    }
+  }
+
+  void _trySignIn() async {
+    try {
+      final currentUser = await AuthRepository().getCurrentUser();
+      if(currentUser == null) return;
+      ref.read(currentUserProvider.notifier).setCurrentUser(currentUser);
+    } on AuthException catch (e) {
+      print(e);
+    } finally {
+      setState(() {
+        _initialized = true;
+      });
     }
   }
 

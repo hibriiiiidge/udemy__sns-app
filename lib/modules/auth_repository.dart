@@ -17,4 +17,9 @@ class AuthRepository {
     );
     return response.user;
   }
+
+  Future<User?> getCurrentUser() async {
+    final response = await Supabase.instance.client.auth.getUser();
+    return response.user;
+  }
 }
