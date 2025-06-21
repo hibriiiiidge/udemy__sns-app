@@ -84,7 +84,11 @@ class SignupScreenState extends State<SignupScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _signUp,
+                        onPressed: _username.isNotEmpty &&
+                                _email.isNotEmpty &&
+                                _password.isNotEmpty
+                            ? _signUp
+                            : null,
                         style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.resolveWith<Color>((states) {
