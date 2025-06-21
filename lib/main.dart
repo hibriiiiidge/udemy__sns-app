@@ -53,7 +53,7 @@ class SnsAppState extends State<SnsApp> {
             );
         }
       },
-      home: const SignupScreen(),
+      home: const SigninScreen(),
     );
   }
 }

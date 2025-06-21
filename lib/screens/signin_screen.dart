@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:udemy__sns_app/widgets/form_text_field.dart';
 import 'package:udemy__sns_app/widgets/keyboard_aware.dart';
+import 'package:udemy__sns_app/modules/auth_repository.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -10,6 +11,14 @@ class SigninScreen extends StatefulWidget {
 }
 
 class SigninScreenState extends State<SigninScreen> {
+  String _email = '';
+  String _password = '';
+
+  void _signin() async {
+    final user = await AuthRepository().signin(_email, _password);
+    print(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,18 +56,24 @@ class SigninScreenState extends State<SigninScreen> {
                         label: 'Email',
                         hintText: 'Enter your email',
                         keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) => setState(() {
+                          _email = value;
+                        }),
                       ),
                       const SizedBox(height: 16.0),
                       FormTextField(
                         label: 'Password',
                         hintText: 'Enter your password',
                         obscureText: true,
+                        onChanged: (value) => setState(() {
+                          _password = value;
+                        }),
                       ),
                       const SizedBox(height: 16.0),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: _email.isNotEmpty && _password.isNotEmpty ? _signin : null,
                           style: ButtonStyle(
                             backgroundColor:
                                 WidgetStateProperty.resolveWith<Color>((states) {
