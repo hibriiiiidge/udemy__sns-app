@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:udemy__sns_app/widgets/form_text_field.dart';
 import 'package:udemy__sns_app/modules/auth_repository.dart';
 import 'package:udemy__sns_app/widgets/keyboard_aware.dart';
+import 'package:udemy__sns_app/modules/auth/current_user_store.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
   SignupScreenState createState() => SignupScreenState();
 }
 
-class SignupScreenState extends State<SignupScreen> {
+class SignupScreenState extends ConsumerState<SignupScreen> {
   String _username = '';
   String _email = '';
   String _password = '';
@@ -21,7 +23,7 @@ class SignupScreenState extends State<SignupScreen> {
       _email,
       _password,
     );
-    print(user);
+    ref.read(currentUserProvider.notifier).setCurrentUser(user);
   }
 
   @override
