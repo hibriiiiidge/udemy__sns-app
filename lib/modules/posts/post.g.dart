@@ -7,7 +7,7 @@ part of 'post.dart';
 // **************************************************************************
 
 _Post _$PostFromJson(Map<String, dynamic> json) => _Post(
-  id: json['id'] as String,
+  id: (json['id'] as num).toInt(),
   content: json['content'] as String,
   userId: json['userId'] as String,
   userName: json['userName'] as String,

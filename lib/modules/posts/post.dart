@@ -5,7 +5,7 @@ part 'post.g.dart';
 @freezed
 abstract class Post with _$Post {
   const factory Post({
-    required String id,
+    required int id,
     required String content,
     required String userId,
     required String userName,
