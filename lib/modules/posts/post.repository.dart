@@ -15,4 +15,17 @@ class PostRepository {
       "userName": user.userMetadata!["name"],
     });
   }
+
+  Future<List<Post>> find() async {
+    final posts = await Supabase.instance.client
+        .from("posts_view")
+        .select("*")
+        .order("created_at", ascending: false);
+    return posts.map((post) => Post.fromJson({
+          "id": post["id"],
+          "content": post["content"],
+          "userId": post["user_id"],
+          "userName": post["user_metadata"]["name"],
+        })).toList();
+  }
 }

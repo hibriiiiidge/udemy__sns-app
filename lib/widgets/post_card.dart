@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:udemy__sns_app/modules/posts/post.dart';
 class PostCard extends StatelessWidget {
+  final Post post;
   const PostCard({
     super.key,
+    required this.post,
   });
 
   @override
@@ -28,13 +30,13 @@ class PostCard extends StatelessWidget {
               Icons.person,
               size: 40,
             ),
-            title: Text("user name",
+            title: Text(post.userName,
                 style: const TextStyle(color: Color(0xFF34D399))),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "post content",
+              post.content,
               style: const TextStyle(
                 color: Colors.black,
               ),

@@ -15,16 +15,30 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
   String _content = "";
+  List<Post> _posts = [];
   final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPosts();
+  }
 
   void _createPost() async {
     if (_content.isEmpty) return;
     final currentUser = ref.watch(currentUserProvider);
     final post = await PostRepository().create(_content, currentUser!);
-    print(post);
     _textController.text = "";
     setState(() {
+      _posts = [post, ..._posts];
       _content = "";
+    });
+  }
+
+  void _fetchPosts() async {
+    final postList = await PostRepository().find();
+    setState(() {
+      _posts = postList;
     });
   }
 
@@ -49,10 +63,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
               },
               onSubmitted: _createPost,
             ),
-            PostCard(),
-            PostCard(),
-            PostCard(),
-            PostCard(),
+            ..._posts.map(
+              (post) => PostCard(
+                post: post,
+              ),
+            ),
           ],
         ),
       ),
