@@ -26,18 +26,21 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _fetchPosts();
-    _initialize();
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _scrollController.removeListener(_onScroll);
     _textController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
-  void _initialize() async {
-    if (_scrollController.position.maxScrollExtent - 100 < _scrollController.offset) {
+  void _onScroll() {
+    if (_isLoading) return;
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
       _fetchPosts();
     }
   }
