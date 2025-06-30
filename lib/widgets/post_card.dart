@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:udemy__sns_app/modules/posts/post.dart';
 class PostCard extends StatelessWidget {
   final Post post;
+  final void Function(int id)? onDeleteButtonTapped;
+
   const PostCard({
     super.key,
     required this.post,
+    this.onDeleteButtonTapped,
   });
 
   @override
@@ -32,6 +35,12 @@ class PostCard extends StatelessWidget {
             ),
             title: Text(post.userName,
                 style: const TextStyle(color: Color(0xFF34D399))),
+            trailing: onDeleteButtonTapped != null
+                ? TextButton(
+                    onPressed: () => onDeleteButtonTapped?.call(post.id),
+                    child: const Text('削除', style: TextStyle(color: Colors.red))
+                  )
+                : null,
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),

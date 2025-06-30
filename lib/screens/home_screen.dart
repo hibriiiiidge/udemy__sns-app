@@ -69,8 +69,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  void _deletePost(Post post) async {
+    await PostRepository().delete(post.id);
+    setState(() {
+      _posts = _posts.where((p) => p.id != post.id).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentUserProvider);
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -94,6 +103,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             ..._posts.map(
               (post) => PostCard(
                 post: post,
+                onDeleteButtonTapped: currentUser?.id == post.userId ? (id) {_deletePost(post);} : null,
               ),
             ),
           ],

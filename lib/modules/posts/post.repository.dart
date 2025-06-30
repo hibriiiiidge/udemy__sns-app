@@ -31,4 +31,9 @@ class PostRepository {
           "userName": post["user_metadata"]["name"],
         })).toList();
   }
+
+  Future<bool> delete(int id) async {
+    await Supabase.instance.client.from("posts").delete().eq("id", id);
+    return true;
+  }
 }
